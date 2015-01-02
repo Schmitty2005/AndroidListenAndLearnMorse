@@ -21,12 +21,22 @@ import androidmorse.AndroidMorse;
 
 
 public class MainActivity extends ActionBarActivity {
-    AndroidMorse aMorse = new AndroidMorse(18, true, 13, "Morse Test w7dk");
+
+    int mWPM = 25;
+    int mFarnsWPM = 12;
+    boolean mFarnsSpacingEnabled = true;
+    AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "WELCOME");
+
     double mAccuracy = 100;
     int mAttempts = 0;
     int mCorrectGuess = 0;
+    String mPlayString = aMorse.levelSets.get(1);
+    String mPlayLevelString = mPlayString.toLowerCase();
+
+    int mCurrentLevel = 1;
     private Button btnSubmit;
     private Spinner spinnerLevel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,8 @@ public class MainActivity extends ActionBarActivity {
         list.add("Level 4");
         list.add("Level 5");
         list.add("Level 6");
-
+        list.add("Level 7");
+//spinnerLevel.setSelection(0);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item, list);
 
@@ -73,16 +84,23 @@ public class MainActivity extends ActionBarActivity {
         Button btnReplay = (Button) (findViewById(R.id.buttonReplay));
 
 
-        btnGuess1.setText("A");
-        btnGuess2.setText("B");
-        btnGuess3.setText("C");
-        btnGuess4.setText("D");
-        btnGuess5.setText("E");
-        btnGuess6.setText("F");
+        btnGuess1.setText(Character.toString(mPlayLevelString.charAt(0)));
+        btnGuess2.setText(Character.toString(mPlayLevelString.charAt(1)));
+        btnGuess3.setText(Character.toString(mPlayLevelString.charAt(2)));
+        btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
+        btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
+        btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
 
 
+
+
+        //set display character to random
         TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
-        charDisplay.setText("A");
+        double random = Math.random() * mPlayLevelString.length();
+        char mChar = mPlayLevelString.charAt((int)random);
+        charDisplay.setText(Character.toUpperCase(mChar));
+
+
         TextView accuracyDisplay = (TextView) (findViewById(R.id.textAccuracy));
         accuracyDisplay.setText(String.format("%s%%", String.valueOf(mAccuracy)));
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
@@ -105,6 +123,9 @@ public class MainActivity extends ActionBarActivity {
     public void addListenerOnSpinnerItemSelection() {
 
         spinnerLevel.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+        //Object stringLevel = spinnerLevel.getSelectedItem();
+        //String test = stringLevel.toString();
+        //System.out.println(test);
     }
 
     @Override
