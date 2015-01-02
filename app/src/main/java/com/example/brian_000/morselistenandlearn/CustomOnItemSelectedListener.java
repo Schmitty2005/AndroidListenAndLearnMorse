@@ -15,7 +15,7 @@ public class CustomOnItemSelectedListener implements OnItemSelectedListener {
                                long id) {
 
         Toast.makeText(parent.getContext(),
-                "Changing Level To : \n" + parent.getItemAtPosition(pos).toString(),
+                "Changing To\n" + parent.getItemAtPosition(pos).toString(),
                 Toast.LENGTH_LONG).show();
 
 

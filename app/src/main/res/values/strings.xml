@@ -15,5 +15,7 @@
     <string name="button_farns">Farnsworth Spacing</string>
     <string name="button_null">#</string>
     <string name="button_replay">REPLAY</string>
+    <string name="toggle_hints">HINTS</string>
+    <string name="view_start_character">W</string>
 
 </resources>
