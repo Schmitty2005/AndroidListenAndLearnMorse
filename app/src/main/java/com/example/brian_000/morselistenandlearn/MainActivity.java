@@ -22,8 +22,8 @@ import androidmorse.AndroidMorse;
 
 public class MainActivity extends ActionBarActivity {
 
-    int mWPM = 45;
-    int mFarnsWPM = 4;
+    int mWPM = 23;
+    int mFarnsWPM = 12;
     boolean mFarnsSpacingEnabled = true;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "WELCOME");
 
@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("Level 1");
         list.add("Level 2");
         list.add("Level 3");
@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         addListenerOnSpinnerItemSelection();
 
         // Button click Listener
-        addListenerOnButton();
+        //addListenerOnButton();
         addListenerReplayButton();
 
         spinnerLevel.setAdapter(dataAdapter);
@@ -176,12 +176,12 @@ public class MainActivity extends ActionBarActivity {
         });
 
     }
-
+/*
     public void addListenerOnButton() {
 
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        //btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -197,7 +197,10 @@ public class MainActivity extends ActionBarActivity {
         });
 
 
+
+
     }
+    */
 }
 
 
