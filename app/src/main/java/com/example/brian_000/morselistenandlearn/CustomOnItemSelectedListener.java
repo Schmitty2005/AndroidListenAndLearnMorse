@@ -14,8 +14,9 @@ public class CustomOnItemSelectedListener implements OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> parent, View view, int pos,
                                long id) {
 
+
         Toast.makeText(parent.getContext(),
-                "Changing To\n" + parent.getItemAtPosition(pos).toString(),
+                "Changing To\n" + parent.getItemAtPosition(pos).toString() + "Position : "+ pos,
                 Toast.LENGTH_LONG).show();
 
 

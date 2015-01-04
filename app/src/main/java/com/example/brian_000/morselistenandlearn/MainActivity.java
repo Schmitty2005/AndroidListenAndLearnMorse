@@ -1,10 +1,8 @@
 package com.example.brian_000.morselistenandlearn;
 
-import android.annotation.SuppressLint;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,13 +13,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-//custom jar file AndroidMorse
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidmorse.AndroidMorse;
-
-import static android.view.View.INVISIBLE;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -37,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
     int mAttemptMAX = 30;
     int mCorrectGuess = 1;
 
-    int mCurrentLevel = 1;
+    int mCurrentLevel = 0;
     int mLevelMax = 9;
     int mLevelThreshold = 35; //number of attempts before level change
 
@@ -47,6 +44,28 @@ public class MainActivity extends ActionBarActivity {
     //int mCurrentLevel = 1;
 
     private Spinner spinnerLevel;
+
+    public class CustomOnItemSelectedListener implements OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos,
+                                   long id) {
+
+
+            Toast.makeText(parent.getContext(),
+                    "Changing To\n" + parent.getItemAtPosition(pos).toString(),
+                    Toast.LENGTH_LONG).show();
+            mCurrentLevel = pos;
+           setLevel();
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+    }
 
 
     @Override
@@ -208,7 +227,10 @@ public class MainActivity extends ActionBarActivity {
         if (mGuessed == mAnswer) {
             mAttempts++;
             mCorrectGuess++;
-            if (mAttempts > mLevelThreshold  && mAccuracy > 95) setLevel();
+            if (mAttempts > mLevelThreshold && mAccuracy > 95) {
+                mCurrentLevel++;
+                setLevel();
+            }
             //TODO add some sort of notification for correct answer given
 
             double random = Math.random() * mPlayLevelString.length();
@@ -248,14 +270,14 @@ public class MainActivity extends ActionBarActivity {
         //Turn of Display if user is doing well
 
         if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold)
-            //mAnswerView.setEnabled(false);
+        //mAnswerView.setEnabled(false);
         {
             mAnswerView.setVisibility(View.INVISIBLE);
         }
         if (mAccuracy < mAccuracyThreshold) {
             mAnswerView.setVisibility(View.VISIBLE);
         }
-        ;
+
 
     }
 
@@ -319,52 +341,41 @@ public class MainActivity extends ActionBarActivity {
         // System.out.println(output.toString());
     }
 
-    public void setLevel(){
+    public void setLevel() {
         //TODO code to pick spinner selection to level
         mAttempts = 1;
         mCorrectGuess = 1;
-        mCurrentLevel++;
-        if (mCurrentLevel ==4){
+        //mCurrentLevel++;
+        this.spinnerLevel.setSelection(mCurrentLevel);
+
+        String convert = aMorse.levelSets.get(mCurrentLevel+1);
+        mPlayLevelString = convert.toLowerCase();
+
+        if (mCurrentLevel == 4) {
             //TODO code for level 4 play string levels 1 - 4 combined
         }
 
-        if (mCurrentLevel == 8 ){
+        if (mCurrentLevel == 8) {
             //TODO code for review of levels 5-8
         }
-        if (mCurrentLevel == mLevelMax){
+        if (mCurrentLevel == mLevelMax) {
             //TODO code for max level reached
         }
         //TODO add code for level 4 review and level 5-8 review with level 9 "morse master" all characters!
-        String interString = aMorse.levelSets.get(mCurrentLevel);
-        mPlayLevelString = interString.toLowerCase();
+       // String interString = aMorse.levelSets.get(mCurrentLevel);
+       // mPlayLevelString = interString.toLowerCase();
+
+        TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
+        double random = Math.random() * mPlayLevelString.length();
+        char mChar = mPlayLevelString.charAt((int) random);
+        mChar = Character.toUpperCase(mChar);
+        mAnswerView.setText(Character.toString(mChar));
+
         shuffleSetButtons();
 
-    }
-/*
-    public void addListenerOnButton() {
-
-        spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
-
-        //btnSubmit = (Button) findViewById(R.id.btnSubmit);
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(MainActivity.this,
-                        "On Button Click : " +
-                                "\n" + String.valueOf(spinnerLevel.getSelectedItem()),
-                        Toast.LENGTH_LONG).show();
-            }
-
-        });
-
-
-
 
     }
-    */
+
 }
 
 
