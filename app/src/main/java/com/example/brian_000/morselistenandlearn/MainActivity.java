@@ -24,10 +24,10 @@ import androidmorse.AndroidMorse;
 
 public class MainActivity extends ActionBarActivity {
 
-    int mWPM = 23;
+    int mWPM = 32;
     int mFarnsWPM = 12;
-    boolean mFarnsSpacingEnabled = true;
-    AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "WELCOME");
+    boolean mFarnsSpacingEnabled = false;
+    AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "!");
 
     int mAccuracy = 100;
     int mAccuracyThreshold = 93;
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    @SuppressLint("ResourceAsColor")
+
     public void onClickGuess(View v) {
 
 
@@ -227,9 +227,9 @@ public class MainActivity extends ActionBarActivity {
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
         //Set colors for visual clue of accuracy -NOTE: May change to icon!
-        if (mAccuracy > 94) accuracyDisplay.setTextColor(R.color.GREEN);
-        if (mAccuracy < 94 && mAccuracy > 75) accuracyDisplay.setTextColor(R.color.ORANGE);
-        if (mAccuracy < 74) accuracyDisplay.setTextColor(R.color.RED);
+        if (mAccuracy > 94) getResources().getColor(R.color.GREEN);
+        if (mAccuracy < 94 && mAccuracy > 75) getResources().getColor(R.color.ORANGE);
+        if (mAccuracy < 74) getResources().getColor(R.color.RED);
 
         //increase level variable after threshold;
 
