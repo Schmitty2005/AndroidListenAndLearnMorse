@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.support.v4.app.NotificationCompatSideChannelService;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,11 +34,16 @@ public class MainActivity extends ActionBarActivity {
     int mAttempts = 1;
     int mAttemptMAX = 30;
     int mCorrectGuess = 1;
+
+    int mCurrentLevel = 1;
+    int mLevelMax = 9;
+    int mLevelThreshold = 35; //number of attempts before level change
+
     String mPlayString = aMorse.levelSets.get(1);
     String mPlayLevelString = mPlayString.toLowerCase();
 
-    int mCurrentLevel = 1;
-    private Button btnSubmit;
+    //int mCurrentLevel = 1;
+
     private Spinner spinnerLevel;
 
 
@@ -59,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         list.add("Level 7");
         list.add("Morse Master");
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>
                 (this, android.R.layout.simple_spinner_item, list);
 
         dataAdapter.setDropDownViewResource
@@ -74,22 +79,10 @@ public class MainActivity extends ActionBarActivity {
         spinnerLevel.setAdapter(dataAdapter);
 
 
-        Button btnGuess1 = (Button) (findViewById(R.id.buttonGuess1));
-        Button btnGuess2 = (Button) (findViewById(R.id.buttonGuess2));
-        Button btnGuess3 = (Button) (findViewById(R.id.buttonGuess3));
-        Button btnGuess4 = (Button) (findViewById(R.id.buttonGuess4));
-        Button btnGuess5 = (Button) (findViewById(R.id.buttonGuess5));
-        Button btnGuess6 = (Button) (findViewById(R.id.buttonGuess6));
+        shuffleSetButtons();
 
-        Button btnReplay = (Button) (findViewById(R.id.buttonReplay));
+        //Button btnReplay = (Button) (findViewById(R.id.buttonReplay));
 
-        //Set View Buttons to characters
-        btnGuess1.setText(Character.toString(mPlayLevelString.charAt(0)));
-        btnGuess2.setText(Character.toString(mPlayLevelString.charAt(1)));
-        btnGuess3.setText(Character.toString(mPlayLevelString.charAt(2)));
-        btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
-        btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
-        btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
 
         //set display character to random
         TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
@@ -104,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
-       // mAccuracy = mCorrectGuess/mAttempts;
+        // mAccuracy = mCorrectGuess/mAttempts;
         //TODO add routine to ad color to accuracy.  Green from >94% Orange for >80% and < 94% and red for <79%
 
     }
@@ -190,17 +183,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @SuppressLint("ResourceAsColor")
-    public void onClickGuess (View v){
+    public void onClickGuess(View v) {
 
 
-        final String TAG = "onClickGuess has ben called";
+        //final String TAG = "onClickGuess has ben called";
 
 
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
 
         CharSequence mAnswerSeq = mAnswerView.getText();
         String mAnswerString = mAnswerSeq.toString();
-        mAnswerString = mAnswerString.toLowerCase();
+        mAnswerString = mAnswerString.toUpperCase();
 
         Character mAnswer = mAnswerString.charAt(0);
 
@@ -210,20 +203,20 @@ public class MainActivity extends ActionBarActivity {
 
 
         //TODO add wrong notification
-        if (mGuessed == mAnswer){
+        if (mGuessed == mAnswer) {
             mAttempts++;
-            mCorrectGuess ++;
+            mCorrectGuess++;
+            if (mAttempts > mLevelThreshold  && mAccuracy > 95) setLevel();
             //TODO add some sort of notification for correct answer given
-            //Change Letter
-            //set display character to random
-            TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
+
             double random = Math.random() * mPlayLevelString.length();
             char mChar = mPlayLevelString.charAt((int) random);
             mChar = Character.toUpperCase(mChar);
-            charDisplay.setText(Character.toString(mChar));
+            mAnswerView.setText(Character.toString(mChar));
 
-        }
- else mAttempts++;
+            //TODO code for playLevelStrings longer than 6 characters
+
+        } else mAttempts++;
 
 
         mAccuracy = (int) (((double) mCorrectGuess / mAttempts) * 100);
@@ -235,20 +228,24 @@ public class MainActivity extends ActionBarActivity {
 
         //Set colors for visual clue of accuracy -NOTE: May change to icon!
         if (mAccuracy > 94) accuracyDisplay.setTextColor(R.color.GREEN);
-        if (mAccuracy <94 && mAccuracy > 75) accuracyDisplay.setTextColor(R.color.ORANGE);
-        if (mAccuracy <74) accuracyDisplay.setTextColor(R.color.RED);
+        if (mAccuracy < 94 && mAccuracy > 75) accuracyDisplay.setTextColor(R.color.ORANGE);
+        if (mAccuracy < 74) accuracyDisplay.setTextColor(R.color.RED);
+
+        //increase level variable after threshold;
+
 
         //replay changed character
         replayView();
 
         //Turn of Display if user is doing well
-        TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
-        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold) charDisplay.setEnabled(false);
-        if (mAccuracy < mAccuracyThreshold) charDisplay.setEnabled(true);
+
+        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold)
+            mAnswerView.setEnabled(false);
+        if (mAccuracy < mAccuracyThreshold) mAnswerView.setEnabled(true);
 
     }
 
-    public void replayView (){
+    public void replayView() {
         TextView replayView = (TextView) findViewById(R.id.viewCharPlaying);
         CharSequence mChrSeq = replayView.getText();
         String mString = mChrSeq.toString();
@@ -269,6 +266,65 @@ public class MainActivity extends ActionBarActivity {
         }
         at.setPlaybackHeadPosition(0);
         at.play();
+    }
+
+    private void shuffleSetButtons() {
+        mPlayLevelString = shuffle(mPlayLevelString);
+        //define buttons from UI
+        Button btnGuess1 = (Button) (findViewById(R.id.buttonGuess1));
+        Button btnGuess2 = (Button) (findViewById(R.id.buttonGuess2));
+        Button btnGuess3 = (Button) (findViewById(R.id.buttonGuess3));
+        Button btnGuess4 = (Button) (findViewById(R.id.buttonGuess4));
+        Button btnGuess5 = (Button) (findViewById(R.id.buttonGuess5));
+        Button btnGuess6 = (Button) (findViewById(R.id.buttonGuess6));
+        //Set View Buttons to characters
+        btnGuess1.setText(Character.toString(mPlayLevelString.charAt(0)));
+        btnGuess2.setText(Character.toString(mPlayLevelString.charAt(1)));
+        btnGuess3.setText(Character.toString(mPlayLevelString.charAt(2)));
+        btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
+        btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
+        btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
+
+
+    }
+
+    public String shuffle(String input) {
+        List<Character> characters = new ArrayList<>();
+        for (char c : input.toCharArray()) {
+            characters.add(c);
+        }
+        StringBuilder output = new StringBuilder(input.length());
+        while (characters.size() != 0) {
+            int randPicker = (int) (Math.random() * characters.size());
+            output.append(characters.remove(randPicker));
+        }
+        String caseConvert = output.toString();
+        input = caseConvert.toUpperCase();
+
+        return input;
+        // System.out.println(output.toString());
+    }
+
+    public void setLevel(){
+        //TODO code to pick spinner selection to level
+        mAttempts = 1;
+        mCorrectGuess = 1;
+        mCurrentLevel++;
+        if (mCurrentLevel ==4){
+            //TODO code for level 4 play string levels 1 - 4 combined
+        }
+
+        if (mCurrentLevel == 8 ){
+            //TODO code for review of levels 5-8
+        }
+        if (mCurrentLevel == mLevelMax){
+            //TODO code for max level reached
+        }
+        //TODO add code for level 4 review and level 5-8 review with level 9 "morse master" all characters!
+        String interString = aMorse.levelSets.get(mCurrentLevel);
+        mPlayLevelString = interString.toLowerCase();
+        shuffleSetButtons();
+
     }
 /*
     public void addListenerOnButton() {

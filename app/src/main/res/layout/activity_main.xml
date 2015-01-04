@@ -13,14 +13,15 @@ android:textAppearance="?android:attr/textAppearanceLarge"
 android:text="@string/view_start_character"
 android:id="@+id/viewCharPlaying"
 android:textAlignment="center"
-android:textSize="240sp"
+android:textSize="250sp"
         android:gravity="top|center_vertical|center_horizontal"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/buttonGuess1" />
+        android:layout_above="@+id/buttonGuess1"
+        android:layout_alignTop="@+id/textView4"
+        android:textIsSelectable="true" />
 
 <Button
 android:layout_width="wrap_content"
@@ -33,7 +34,8 @@ android:layout_alignParentStart="true"
     android:gravity="center_vertical|center_horizontal"
     android:layout_alignParentBottom="true"
     android:layout_toLeftOf="@+id/buttonGuess5"
-    android:onClick="onClickGuess" />
+    android:onClick="onClickGuess"
+    android:textAlignment="center" />
 
 <Button
 android:layout_width="wrap_content"
@@ -43,10 +45,11 @@ android:id="@+id/buttonGuess5"
     android:gravity="center_vertical|center_horizontal"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
-    android:onClick="onClickGuess" />
+    android:onClick="onClickGuess"
+    android:textAlignment="center" />
 
 <Button
-style="?android:attr/buttonStyleSmall"
+
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="New Button"
@@ -56,12 +59,13 @@ android:layout_above="@+id/buttonGuess4"
 
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="false"
-    android:gravity="center_vertical|center_horizontal"
     android:layout_toLeftOf="@+id/buttonGuess5"
-    android:onClick="onClickGuess" />
+    android:onClick="onClickGuess"
+    android:gravity="center_vertical|center_horizontal"
+    android:textAlignment="center" />
 
 <Button
-style="?android:attr/buttonStyleSmall"
+
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="New Button"
@@ -69,10 +73,11 @@ android:id="@+id/buttonGuess2"
 
     android:gravity="center_vertical|center_horizontal"
     android:layout_alignTop="@+id/buttonGuess1"
+    android:onClick="onClickGuess"
     android:layout_toRightOf="@+id/buttonGuess4"
-    android:layout_toStartOf="@+id/buttonGuess3"
     android:layout_toLeftOf="@+id/buttonGuess3"
-    android:onClick="onClickGuess" />
+    android:layout_toStartOf="@+id/buttonGuess3"
+    android:textAlignment="center" />
 
 <Button
 android:layout_width="wrap_content"
@@ -80,12 +85,12 @@ android:layout_height="wrap_content"
 android:text="New Button"
 android:id="@+id/buttonGuess3"
 android:layout_alignTop="@+id/buttonGuess2"
-android:layout_alignParentRight="true"
-android:layout_alignParentEnd="true"
     android:gravity="center_vertical|center_horizontal"
     android:layout_toRightOf="@+id/buttonGuess5"
-    android:layout_toEndOf="@+id/buttonGuess5"
-    android:onClick="onClickGuess" />
+    android:onClick="onClickGuess"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:textAlignment="center" />
 
     <Button
         android:layout_width="wrap_content"
@@ -99,7 +104,8 @@ android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/buttonGuess5"
         android:layout_toEndOf="@+id/buttonGuess5"
         android:gravity="center_vertical|center_horizontal"
-        android:onClick="onClickGuess" />
+        android:onClick="onClickGuess"
+        android:textAlignment="center" />
 
 <TextView
 android:layout_width="wrap_content"
@@ -175,7 +181,8 @@ android:layout_toEndOf="@+id/textView2"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textAccuracy"
         android:layout_above="@+id/textAttempts"
-        android:textAlignment="textEnd" />
+        android:textAlignment="textEnd"
+        android:gravity="right" />
 
 
 
