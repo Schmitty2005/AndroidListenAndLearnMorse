@@ -21,6 +21,8 @@ import java.util.List;
 
 import androidmorse.AndroidMorse;
 
+import static android.view.View.INVISIBLE;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -227,9 +229,15 @@ public class MainActivity extends ActionBarActivity {
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
         //Set colors for visual clue of accuracy -NOTE: May change to icon!
-        if (mAccuracy > 94) getResources().getColor(R.color.GREEN);
-        if (mAccuracy < 94 && mAccuracy > 75) getResources().getColor(R.color.ORANGE);
-        if (mAccuracy < 74) getResources().getColor(R.color.RED);
+        if (mAccuracy > 94) {
+            accuracyDisplay.setTextColor(getResources().getColor(R.color.GREEN));
+        }
+        if (mAccuracy < 94 && mAccuracy > 75) {
+            accuracyDisplay.setTextColor(getResources().getColor(R.color.ORANGE));
+        }
+        if (mAccuracy < 74) {
+            accuracyDisplay.setTextColor(getResources().getColor(R.color.RED));
+        }
 
         //increase level variable after threshold;
 
@@ -240,8 +248,14 @@ public class MainActivity extends ActionBarActivity {
         //Turn of Display if user is doing well
 
         if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold)
-            mAnswerView.setEnabled(false);
-        if (mAccuracy < mAccuracyThreshold) mAnswerView.setEnabled(true);
+            //mAnswerView.setEnabled(false);
+        {
+            mAnswerView.setVisibility(View.INVISIBLE);
+        }
+        if (mAccuracy < mAccuracyThreshold) {
+            mAnswerView.setVisibility(View.VISIBLE);
+        }
+        ;
 
     }
 

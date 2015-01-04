@@ -19,13 +19,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textIsSelectable="true"
 
-        android:textSize="250sp"
+        android:textSize="180sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_below="@+id/textView2" />
+        android:layout_alignRight="@+id/textView4"
+        android:layout_alignEnd="@+id/textView4"
+        android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -134,43 +134,43 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:text="@string/view_accuracy"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/textView"
+        android:layout_toLeftOf="@+id/textView"
+        android:layout_toStartOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textAccuracy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
         android:text="Accuracy"
         android:textAlignment="textEnd"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
         android:text="@string/view_attempts"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
     <TextView
         android:id="@+id/textAttempts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textAccuracy"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
         android:text="Attempts"
         android:textAlignment="textEnd"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignLeft="@+id/textAccuracy"
+        android:layout_alignStart="@+id/textAccuracy" />
 
     <Button
         android:id="@+id/buttonReplay"
@@ -194,8 +194,8 @@
         android:gravity="right"
         android:spinnerMode="dropdown"
         android:textAlignment="textEnd"
-        android:layout_toLeftOf="@+id/linearLayout2"
-        android:layout_toStartOf="@+id/linearLayout2" />
+        android:layout_toStartOf="@+id/linearLayout2"
+        android:layout_toLeftOf="@+id/linearLayout2" />
 
 
     <Button
