@@ -1,8 +1,10 @@
 package com.example.brian_000.morselistenandlearn;
 
+import android.annotation.SuppressLint;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,9 +29,11 @@ public class MainActivity extends ActionBarActivity {
     boolean mFarnsSpacingEnabled = true;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "WELCOME");
 
-    double mAccuracy = 100;
-    int mAttempts = 0;
-    int mCorrectGuess = 0;
+    int mAccuracy = 100;
+    int mAccuracyThreshold = 93;
+    int mAttempts = 1;
+    int mAttemptMAX = 30;
+    int mCorrectGuess = 1;
     String mPlayString = aMorse.levelSets.get(1);
     String mPlayLevelString = mPlayString.toLowerCase();
 
@@ -99,6 +103,10 @@ public class MainActivity extends ActionBarActivity {
         accuracyDisplay.setText(String.format("%s%%", String.valueOf(mAccuracy)));
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
+
+       // mAccuracy = mCorrectGuess/mAttempts;
+        //TODO add routine to ad color to accuracy.  Green from >94% Orange for >80% and < 94% and red for <79%
+
     }
 
 
@@ -154,7 +162,11 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-
+                TextView replayView = (TextView) findViewById(R.id.viewCharPlaying);
+                CharSequence mChrSeq = replayView.getText();
+                String mString = mChrSeq.toString();
+                AndroidMorse aMorse;
+                aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mString);
                 //TODO Replay audio code here
                 byte playByte[] = aMorse.morseWaveByteArray;
                 AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
@@ -175,6 +187,88 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void onClickGuess (View v){
+
+
+        final String TAG = "onClickGuess has ben called";
+
+
+        TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
+
+        CharSequence mAnswerSeq = mAnswerView.getText();
+        String mAnswerString = mAnswerSeq.toString();
+        mAnswerString = mAnswerString.toLowerCase();
+
+        Character mAnswer = mAnswerString.charAt(0);
+
+        Button buttonPressed = (Button) findViewById(v.getId());
+        CharSequence mGuessedChar = buttonPressed.getText();
+        Character mGuessed = mGuessedChar.charAt(0);
+
+
+        //TODO add wrong notification
+        if (mGuessed == mAnswer){
+            mAttempts++;
+            mCorrectGuess ++;
+            //TODO add some sort of notification for correct answer given
+            //Change Letter
+            //set display character to random
+            TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
+            double random = Math.random() * mPlayLevelString.length();
+            char mChar = mPlayLevelString.charAt((int) random);
+            mChar = Character.toUpperCase(mChar);
+            charDisplay.setText(Character.toString(mChar));
+
+        }
+ else mAttempts++;
+
+
+        mAccuracy = (int) (((double) mCorrectGuess / mAttempts) * 100);
+
+        TextView accuracyDisplay = (TextView) (findViewById(R.id.textAccuracy));
+        accuracyDisplay.setText(String.format("%s%%", String.valueOf(mAccuracy)));
+        TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
+        attemptsDisplay.setText(String.valueOf(mAttempts));
+
+        //Set colors for visual clue of accuracy -NOTE: May change to icon!
+        if (mAccuracy > 94) accuracyDisplay.setTextColor(R.color.GREEN);
+        if (mAccuracy <94 && mAccuracy > 75) accuracyDisplay.setTextColor(R.color.ORANGE);
+        if (mAccuracy <74) accuracyDisplay.setTextColor(R.color.RED);
+
+        //replay changed character
+        replayView();
+
+        //Turn of Display if user is doing well
+        TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
+        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold) charDisplay.setEnabled(false);
+        if (mAccuracy < mAccuracyThreshold) charDisplay.setEnabled(true);
+
+    }
+
+    public void replayView (){
+        TextView replayView = (TextView) findViewById(R.id.viewCharPlaying);
+        CharSequence mChrSeq = replayView.getText();
+        String mString = mChrSeq.toString();
+        AndroidMorse aMorse;
+        aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mString);
+        //TODO Replay audio code here
+        byte playByte[] = aMorse.morseWaveByteArray;
+        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
+                AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                playByte.length, AudioTrack.MODE_STATIC);
+        int write = at.write(playByte, 44, (playByte.length - 44));
+        if (write < 0) {
+            Toast.makeText(MainActivity.this,
+                    "Error playing wave : " +
+                            "\n" + String.valueOf(write),
+                    Toast.LENGTH_LONG).show();
+
+        }
+        at.setPlaybackHeadPosition(0);
+        at.play();
     }
 /*
     public void addListenerOnButton() {

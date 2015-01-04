@@ -14,9 +14,13 @@ android:text="@string/view_start_character"
 android:id="@+id/viewCharPlaying"
 android:textAlignment="center"
 android:textSize="240sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textAttempts"
-        android:layout_above="@+id/textView" />
+        android:gravity="top|center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/buttonGuess1" />
 
 <Button
 android:layout_width="wrap_content"
@@ -28,7 +32,8 @@ android:layout_alignParentStart="true"
     android:layout_toStartOf="@+id/buttonGuess5"
     android:gravity="center_vertical|center_horizontal"
     android:layout_alignParentBottom="true"
-    android:layout_toLeftOf="@+id/buttonGuess5" />
+    android:layout_toLeftOf="@+id/buttonGuess5"
+    android:onClick="onClickGuess" />
 
 <Button
 android:layout_width="wrap_content"
@@ -37,7 +42,8 @@ android:text="New Button"
 android:id="@+id/buttonGuess5"
     android:gravity="center_vertical|center_horizontal"
     android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true" />
+    android:layout_centerHorizontal="true"
+    android:onClick="onClickGuess" />
 
 <Button
 style="?android:attr/buttonStyleSmall"
@@ -51,7 +57,8 @@ android:layout_above="@+id/buttonGuess4"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="false"
     android:gravity="center_vertical|center_horizontal"
-    android:layout_toLeftOf="@+id/buttonGuess5" />
+    android:layout_toLeftOf="@+id/buttonGuess5"
+    android:onClick="onClickGuess" />
 
 <Button
 style="?android:attr/buttonStyleSmall"
@@ -64,7 +71,8 @@ android:id="@+id/buttonGuess2"
     android:layout_alignTop="@+id/buttonGuess1"
     android:layout_toRightOf="@+id/buttonGuess4"
     android:layout_toStartOf="@+id/buttonGuess3"
-    android:layout_toLeftOf="@+id/buttonGuess3" />
+    android:layout_toLeftOf="@+id/buttonGuess3"
+    android:onClick="onClickGuess" />
 
 <Button
 android:layout_width="wrap_content"
@@ -76,7 +84,8 @@ android:layout_alignParentRight="true"
 android:layout_alignParentEnd="true"
     android:gravity="center_vertical|center_horizontal"
     android:layout_toRightOf="@+id/buttonGuess5"
-    android:layout_toEndOf="@+id/buttonGuess5" />
+    android:layout_toEndOf="@+id/buttonGuess5"
+    android:onClick="onClickGuess" />
 
     <Button
         android:layout_width="wrap_content"
@@ -89,7 +98,8 @@ android:layout_alignParentEnd="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/buttonGuess5"
         android:layout_toEndOf="@+id/buttonGuess5"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"
+        android:onClick="onClickGuess" />
 
 <TextView
 android:layout_width="wrap_content"
@@ -167,24 +177,19 @@ android:layout_toEndOf="@+id/textView2"
         android:layout_above="@+id/textAttempts"
         android:textAlignment="textEnd" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/toggle_hints"
-        android:id="@+id/textHintsToggle"
-        android:layout_below="@+id/spinnerLevel"
-        android:layout_alignRight="@+id/spinnerLevel"
-        android:layout_alignEnd="@+id/spinnerLevel" />
 
-    <ToggleButton
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/toggle_hints"
-        android:id="@+id/toggleButton"
-        android:checked="true"
-        android:layout_alignTop="@+id/viewCharPlaying"
-        android:layout_alignRight="@+id/spinnerLevel"
-        android:layout_alignEnd="@+id/spinnerLevel" />
+        android:text="@string/button_hints"
+        android:id="@+id/buttonHint"
+        android:textSize="12sp"
+        android:textColor="#ff3032e9"
+
+        android:layout_alignTop="@+id/buttonReplay"
+        android:layout_alignRight="@+id/buttonGuess3"
+        android:layout_alignEnd="@+id/buttonGuess3" />
 
 </RelativeLayout>
