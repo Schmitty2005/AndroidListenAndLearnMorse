@@ -41,10 +41,8 @@
             android:id="@+id/buttonGuess1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
 
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical|center_horizontal"
+
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center"
@@ -55,10 +53,9 @@
             android:id="@+id/buttonGuess2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
 
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
+
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center" />
@@ -67,11 +64,8 @@
             android:id="@+id/buttonGuess3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
+
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center" />
@@ -92,10 +86,7 @@
             android:id="@+id/buttonGuess4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center_vertical|center_horizontal"
+
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center"
@@ -105,10 +96,8 @@
             android:id="@+id/buttonGuess5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
+
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center" />
@@ -117,10 +106,6 @@
             android:id="@+id/buttonGuess6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
 
             android:layout_weight="1"
             android:onClick="onClickGuess"

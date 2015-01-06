@@ -1,6 +1,65 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/wpm_group"
+        android:title="WPM Settings">
+        <menu>
+
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/wpm13"
+                    android:title="13 WPM" />
+                <item
+                    android:id="@+id/wpm18"
+                    android:title="18 WPM" />
+                <item
+                    android:id="@+id/wpm25"
+                    android:title="25 WPM" />
+                <item
+                    android:id="@+id/wpm35"
+                    android:title="35 WPM" />
+                <item
+                    android:id="@+id/wpm42"
+                    android:title="42 WPM" />
+
+            </group>
+
+        </menu>
+    </item>
+    <item
+        android:id="@+id/tone_settings"
+        android:title="Tone Settings">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/tone600hz"
+                    android:title="600 Hertz" />
+                <item
+                    android:id="@+id/tone800hz"
+                    android:title="800 Hertz" />
+                <item
+                    android:id="@+id/tone1000hz"
+                    android:title="1000 Hertz" />
+                <item
+                    android:id="@+id/tone1200hz"
+                    android:title="1200 Hertz" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/help"
+        android:title="Help" />
+    <item
+        android:id="@+id/about"
+        android:title="About" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 </menu>

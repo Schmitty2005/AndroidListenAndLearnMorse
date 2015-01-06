@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--This file is for future versions only. Not Used -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/tone600hz"
+            android:title="600 Hertz" />
+        <item
+            android:id="@+id/tone800hz"
+            android:title="800 Hertz" />
+        <item
+            android:id="@+id/tone1000hz"
+            android:title="1000 Hertz" />
+        <item
+            android:id="@+id/tone1200hz"
+            android:title="1200 Hertz" />
+    </group>
+
+    <item
+        android:id="@+id/farns_speed"
+        android:title="Farnsworth WPM">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/farns8wpm"
+                    android:title="8 WPM" />
+                <item
+                    android:id="@+id/farns12wpm"
+                    android:title="12 WPM" />
+                <item
+                    android:id="@+id/farns18wpm"
+                    android:title="18 WPM" />
+
+            </group>
+
+        </menu>
+    </item>
+    <item
+        android:id="@+id/farns_settings"
+        android:title="Farnsworth Setting">
+        <menu>
+
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/farnsTrue"
+                    android:title="Enabled" />
+                <item
+                    android:id="@+id/farnsFalse"
+                    android:title="Disabled" />
+
+            </group>
+
+        </menu>
+    </item>
+
+</menu>

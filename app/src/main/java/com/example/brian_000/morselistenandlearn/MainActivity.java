@@ -23,27 +23,41 @@ import androidmorse.AndroidMorse;
 
 public class MainActivity extends ActionBarActivity {
 
-    int mWPM = 32;
+    int mWPM = 42;
     int mFarnsWPM = 12;
     boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "!");
 
     int mAccuracy = 100;
+    private final static  String KEY_ACCURACY = "accuracy";
+
     int mAccuracyThreshold = 93;
     int mAttempts = 1;
+    private final static String KEY_ATTEMPTS = "attempts";
     int mAttemptMAX = 30;
+
     int mCorrectGuess = 1;
+    private final static String KEY_CORRECT = "correct";
 
     int mCurrentLevel = 0;
+    private final static String KEY_LEVEL = "level";
+
     int mLevelMax = 9;
     int mLevelThreshold = 35; //number of attempts before level change
 
     String mPlayString = aMorse.levelSets.get(1);
     String mPlayLevelString = mPlayString.toLowerCase();
-
     //int mCurrentLevel = 1;
-
     private Spinner spinnerLevel;
+
+    @Override
+    public void onSaveInstanceState (Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(KEY_ACCURACY, mAccuracy);
+        savedInstanceState.putInt(KEY_ATTEMPTS, mAttempts);
+        savedInstanceState.putInt(KEY_CORRECT, mCorrectGuess);
+        savedInstanceState.putInt(KEY_LEVEL, mCurrentLevel);
+    }
 
     public class CustomOnItemSelectedListener implements OnItemSelectedListener {
 
@@ -73,6 +87,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
+
+        if(savedInstanceState != null){
+            mAccuracy = savedInstanceState.getInt(KEY_ACCURACY, 100);
+            mAttempts = savedInstanceState.getInt(KEY_ATTEMPTS, 1);
+            mCurrentLevel = savedInstanceState.getInt(KEY_LEVEL, 0);
+            mCorrectGuess = savedInstanceState.getInt(KEY_CORRECT, 0);
+        }
 
         List<String> list = new ArrayList<>();
         list.add("Level 1");
@@ -342,7 +363,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setLevel() {
-        //TODO code to pick spinner selection to level
+        //TODO this is causing a problem when rotated.....mAttempts is automatically set to one
+        //each time!
         mAttempts = 1;
         mCorrectGuess = 1;
         //mCurrentLevel++;
