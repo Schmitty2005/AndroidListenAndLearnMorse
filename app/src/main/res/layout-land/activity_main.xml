@@ -39,7 +39,7 @@
         <Button
 
             android:id="@+id/buttonGuess1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
 
@@ -51,7 +51,7 @@
         <Button
 
             android:id="@+id/buttonGuess2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_weight="1"
@@ -62,7 +62,7 @@
 
         <Button
             android:id="@+id/buttonGuess3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
 
@@ -84,7 +84,7 @@
 
         <Button
             android:id="@+id/buttonGuess4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:onClick="onClickGuess"
@@ -94,7 +94,7 @@
 
         <Button
             android:id="@+id/buttonGuess5"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
 
@@ -104,7 +104,7 @@
 
         <Button
             android:id="@+id/buttonGuess6"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_weight="1"

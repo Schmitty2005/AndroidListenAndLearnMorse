@@ -41,8 +41,8 @@
         <Button
 
             android:id="@+id/buttonGuess1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
 
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
@@ -53,8 +53,8 @@
         <Button
 
             android:id="@+id/buttonGuess2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
 
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
@@ -64,8 +64,8 @@
 
         <Button
             android:id="@+id/buttonGuess3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
@@ -84,8 +84,8 @@
 
         <Button
             android:id="@+id/buttonGuess4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
             android:text="New Button"
@@ -94,8 +94,8 @@
 
         <Button
             android:id="@+id/buttonGuess5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
@@ -104,8 +104,8 @@
 
         <Button
             android:id="@+id/buttonGuess6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
 
             android:layout_weight="1"
             android:onClick="onClickGuess"
@@ -181,7 +181,7 @@
         android:layout_toRightOf="@+id/textAccuracy"
         android:gravity="right"
         android:spinnerMode="dropdown"
-        android:textAlignment="textEnd" />
+        android:textAlignment="viewEnd" />
 
 
     <Button
@@ -195,7 +195,8 @@
 
         android:text="@string/button_hints"
         android:textColor="#ff3032e9"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView"

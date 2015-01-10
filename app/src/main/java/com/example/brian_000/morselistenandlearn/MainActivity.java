@@ -13,23 +13,27 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+
+import org.w3c.dom.Text;
 
 import androidmorse.AndroidMorse;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    int mWPM = 42;
+    int mWPM = 25;
     int mFarnsWPM = 12;
     boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, "!");
 
     int mAccuracy = 100;
-    private final static  String KEY_ACCURACY = "accuracy";
+    private final static String KEY_ACCURACY = "accuracy";
 
     int mAccuracyThreshold = 93;
     int mAttempts = 1;
@@ -47,16 +51,26 @@ public class MainActivity extends ActionBarActivity {
 
     String mPlayString = aMorse.levelSets.get(1);
     String mPlayLevelString = mPlayString.toLowerCase();
+
+    Character mCurrentChar;
+    private final static String KEY_CURRENT_CHAR_PLAYING = "current";
+
     //int mCurrentLevel = 1;
     private Spinner spinnerLevel;
 
     @Override
-    public void onSaveInstanceState (Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(KEY_ACCURACY, mAccuracy);
         savedInstanceState.putInt(KEY_ATTEMPTS, mAttempts);
         savedInstanceState.putInt(KEY_CORRECT, mCorrectGuess);
         savedInstanceState.putInt(KEY_LEVEL, mCurrentLevel);
+        TextView tv = (TextView) findViewById(R.id.viewCharPlaying);
+        CharSequence cs = tv.getText();
+        mCurrentChar = cs.charAt(0);
+        savedInstanceState.putChar(KEY_CURRENT_CHAR_PLAYING, mCurrentChar);
+
+        //tv.setText(mCurrentChar);
     }
 
     public class CustomOnItemSelectedListener implements OnItemSelectedListener {
@@ -66,10 +80,10 @@ public class MainActivity extends ActionBarActivity {
 
 
             Toast.makeText(parent.getContext(),
-                    "Changing To\n" + parent.getItemAtPosition(pos).toString(),
-                    Toast.LENGTH_LONG).show();
+                     parent.getItemAtPosition(pos).toString(),
+                    Toast.LENGTH_SHORT).show();
             mCurrentLevel = pos;
-           setLevel();
+            setLevel();
 
         }
 
@@ -88,12 +102,15 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mAccuracy = savedInstanceState.getInt(KEY_ACCURACY, 100);
             mAttempts = savedInstanceState.getInt(KEY_ATTEMPTS, 1);
             mCurrentLevel = savedInstanceState.getInt(KEY_LEVEL, 0);
             mCorrectGuess = savedInstanceState.getInt(KEY_CORRECT, 0);
+            mCurrentChar = savedInstanceState.getChar(KEY_CURRENT_CHAR_PLAYING, '?');
+
         }
+        spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         List<String> list = new ArrayList<>();
         list.add("Level 1");
@@ -113,9 +130,6 @@ public class MainActivity extends ActionBarActivity {
                 (android.R.layout.simple_spinner_dropdown_item);
         // Spinner item selection Listener
         addListenerOnSpinnerItemSelection();
-
-        // Button click Listener
-        //addListenerOnButton();
         addListenerReplayButton();
 
         spinnerLevel.setAdapter(dataAdapter);
@@ -123,14 +137,16 @@ public class MainActivity extends ActionBarActivity {
 
         shuffleSetButtons();
 
-        //Button btnReplay = (Button) (findViewById(R.id.buttonReplay));
-
-
         //set display character to random
         TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
         double random = Math.random() * mPlayLevelString.length();
         char mChar = mPlayLevelString.charAt((int) random);
         mChar = Character.toUpperCase(mChar);
+
+        //this doesn't seem to work right yet!
+        //current character is not set during rotation!
+        if (mCurrentChar != null) mChar = mCurrentChar;
+
         charDisplay.setText(Character.toString(mChar));
 
 
@@ -139,8 +155,6 @@ public class MainActivity extends ActionBarActivity {
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
-        // mAccuracy = mCorrectGuess/mAttempts;
-        //TODO add routine to ad color to accuracy.  Green from >94% Orange for >80% and < 94% and red for <79%
 
     }
 
@@ -151,19 +165,6 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
 
-
-/*
-//============
-//Code to play wave
-        byte playByte[] = aMorse.morseWaveByteArray;
-        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
-                AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
-                playByte.length, AudioTrack.MODE_STATIC);
-        int write = at.write(playByte, 44, (playByte.length - 44));
-        at.play();
-// end of code to play wave
-//==============
-*/
         return true;
     }
 
@@ -178,12 +179,25 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.wpm13:
+                mWPM = 13;
+                return true;
+            case R.id.wpm18:
+                mWPM = 18;
+                return true;
+            case R.id.wpm25:
+                mWPM = 25;
+                return true;
+            case R.id.wpm35:
+                mWPM = 35;
+                return true;
+            case R.id.wpm42:
+                mWPM = 42;
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -305,6 +319,7 @@ public class MainActivity extends ActionBarActivity {
     public void replayView() {
         TextView replayView = (TextView) findViewById(R.id.viewCharPlaying);
         CharSequence mChrSeq = replayView.getText();
+
         String mString = mChrSeq.toString();
         AndroidMorse aMorse;
         aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mString);
@@ -363,14 +378,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setLevel() {
-        //TODO this is causing a problem when rotated.....mAttempts is automatically set to one
-        //each time!
+        //TODO this is causing a problem when rotated.....mAttempts is automatically set to one each time!
+        //TODO when new level is first selected, old character remains causing accuracy error! YUCK!
+        //TODO maybe just move this code to spinner listener??? may cause problems.....
         mAttempts = 1;
         mCorrectGuess = 1;
-        //mCurrentLevel++;
-        this.spinnerLevel.setSelection(mCurrentLevel);
 
-        String convert = aMorse.levelSets.get(mCurrentLevel+1);
+        int mLevelCheck = this.spinnerLevel.getSelectedItemPosition();
+        if (mLevelCheck != mCurrentLevel) {
+
+            this.spinnerLevel.setSelection(mCurrentLevel);
+        }
+        String convert = aMorse.levelSets.get(mCurrentLevel + 1);
         mPlayLevelString = convert.toLowerCase();
 
         if (mCurrentLevel == 4) {
@@ -384,20 +403,35 @@ public class MainActivity extends ActionBarActivity {
             //TODO code for max level reached
         }
         //TODO add code for level 4 review and level 5-8 review with level 9 "morse master" all characters!
-       // String interString = aMorse.levelSets.get(mCurrentLevel);
-       // mPlayLevelString = interString.toLowerCase();
+        // String interString = aMorse.levelSets.get(mCurrentLevel);
+        // mPlayLevelString = interString.toLowerCase();
 
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
         double random = Math.random() * mPlayLevelString.length();
         char mChar = mPlayLevelString.charAt((int) random);
         mChar = Character.toUpperCase(mChar);
+
+        //the line below will not be needed once level switching on rotation is fixed!
+        if (mCurrentChar != null && mLevelCheck != mCurrentLevel) mChar = mCurrentChar;
+
         mAnswerView.setText(Character.toString(mChar));
 
         shuffleSetButtons();
-
-
     }
+
 
 }
 
+/*
+//============
+//Code to play wave
+        byte playByte[] = aMorse.morseWaveByteArray;
+        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
+                AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                playByte.length, AudioTrack.MODE_STATIC);
+        int write = at.write(playByte, 44, (playByte.length - 44));
+        at.play();
+// end of code to play wave
+//==============
+*/
 
