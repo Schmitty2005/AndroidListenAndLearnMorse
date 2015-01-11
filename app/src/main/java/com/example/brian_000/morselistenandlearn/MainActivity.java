@@ -225,8 +225,7 @@ public class MainActivity extends ActionBarActivity {
                 CharSequence mChrSeq = replayView.getText();
                 String mString = mChrSeq.toString();
                 AndroidMorse aMorse;
-                aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mString);
-                //TODO Replay audio code here
+                aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, mString);
                 byte playByte[] = aMorse.morseWaveByteArray;
                 AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
                         AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
@@ -241,8 +240,6 @@ public class MainActivity extends ActionBarActivity {
                 }
                 at.setPlaybackHeadPosition(0);
                 at.play();
-
-
             }
         });
 
@@ -250,7 +247,6 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void onClickGuess(View v) {
-
 
         //final String TAG = "onClickGuess has ben called";
 
@@ -290,11 +286,7 @@ public class MainActivity extends ActionBarActivity {
             char mChar = mPlayLevelString.charAt((int) random);
             mChar = Character.toUpperCase(mChar);
             mAnswerView.setText(Character.toString(mChar));
-
-            //TODO code for playLevelStrings longer than 6 characters
-
         } else mAttempts++;
-
 
         mAccuracy = (int) (((double) mCorrectGuess / mAttempts) * 100);
 
@@ -315,22 +307,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         //increase level variable after threshold;
-
-
         //replay changed character
+
         replayView();
 
-        //Turn of Display if user is doing well
+        //Turn off Display if user is doing well
 
-        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold)
-        //mAnswerView.setEnabled(false);
+        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold && (mCurrentLevel != 4 || mCurrentLevel != 8))
+
         {
             mAnswerView.setVisibility(View.INVISIBLE);
         }
         if (mAccuracy < mAccuracyThreshold && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
             mAnswerView.setVisibility(View.VISIBLE);
         }
-
 
     }
 
@@ -341,8 +331,8 @@ public class MainActivity extends ActionBarActivity {
         String mString = mChrSeq.toString();
         AndroidMorse aMorse;
         aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, mString);
-        //TODO Replay audio code here
         byte playByte[] = aMorse.morseWaveByteArray;
+
         AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
                 AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
                 playByte.length, AudioTrack.MODE_STATIC);
@@ -374,7 +364,6 @@ public class MainActivity extends ActionBarActivity {
         btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
         btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
         btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
-
 
     }
 
