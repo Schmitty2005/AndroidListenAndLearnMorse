@@ -26,9 +26,11 @@ import androidmorse.AndroidMorse;
 
 public class MainActivity extends ActionBarActivity {
     int mFreqTone = 600;
+    private final static String KEY_TONE = "tone";
     int mWPM = 25;
+    private final static String KEY_WPM = "wpm";
     int mFarnsWPM = 12;
-    boolean mFarnsSpacingEnabled = false;
+   final  boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, "!");
 
     int mAccuracy = 100;
@@ -64,6 +66,8 @@ public class MainActivity extends ActionBarActivity {
         savedInstanceState.putInt(KEY_ATTEMPTS, mAttempts);
         savedInstanceState.putInt(KEY_CORRECT, mCorrectGuess);
         savedInstanceState.putInt(KEY_LEVEL, mCurrentLevel);
+        savedInstanceState.putInt(KEY_TONE, mFreqTone);
+        savedInstanceState.putInt(KEY_WPM, mWPM);
         TextView tv = (TextView) findViewById(R.id.viewCharPlaying);
         CharSequence cs = tv.getText();
         mCurrentChar = cs.charAt(0);
@@ -77,14 +81,16 @@ public class MainActivity extends ActionBarActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos,
                                    long id) {
 
-
-            Toast.makeText(parent.getContext(),
-                    parent.getItemAtPosition(pos).toString(),
-                    Toast.LENGTH_SHORT).show();
+            if (mCurrentLevel != pos) {
+                Toast.makeText(parent.getContext(),
+                        parent.getItemAtPosition(pos).toString(),
+                        Toast.LENGTH_SHORT).show();
+                mCurrentLevel = pos;
+                setLevel();
+            }
             mCurrentLevel = pos;
-            setLevel();
-
-        }
+            setLevel();//  replayView();
+    }
 
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
@@ -99,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
+        //spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         if (savedInstanceState != null) {
             mAccuracy = savedInstanceState.getInt(KEY_ACCURACY, 100);
@@ -107,7 +113,8 @@ public class MainActivity extends ActionBarActivity {
             mCurrentLevel = savedInstanceState.getInt(KEY_LEVEL, 0);
             mCorrectGuess = savedInstanceState.getInt(KEY_CORRECT, 0);
             mCurrentChar = savedInstanceState.getChar(KEY_CURRENT_CHAR_PLAYING, '?');
-
+            mFreqTone = savedInstanceState.getInt(KEY_TONE, 600);
+            mWPM = savedInstanceState.getInt(KEY_WPM, 18);
         }
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
@@ -133,7 +140,8 @@ public class MainActivity extends ActionBarActivity {
 
         spinnerLevel.setAdapter(dataAdapter);
 
-
+        if (savedInstanceState != null) this.spinnerLevel.setSelection(mCurrentLevel);
+        addListenerReplayButton();
         shuffleSetButtons();
 
         //set display character to random
@@ -154,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
-
+        replayView();
     }
 
 
