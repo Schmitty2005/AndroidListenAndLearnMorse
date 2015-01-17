@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
     int mFreqTone = 600;
     int mWPM = 25;
     int mFarnsWPM = 12;
-    boolean mFarnsSpacingEnabled = false;
+    final boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, "!");
 
     int mAccuracy = 100;
@@ -77,13 +77,16 @@ public class MainActivity extends ActionBarActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int pos,
                                    long id) {
 
-
+            if (mCurrentLevel != pos) {
             Toast.makeText(parent.getContext(),
                     parent.getItemAtPosition(pos).toString(),
                     Toast.LENGTH_SHORT).show();
             mCurrentLevel = pos;
             setLevel();
 
+        }
+            mCurrentLevel = pos;
+            setLevel();//  replayView();
         }
 
         @Override
@@ -99,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
+        //spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         if (savedInstanceState != null) {
             mAccuracy = savedInstanceState.getInt(KEY_ACCURACY, 100);
@@ -108,6 +111,7 @@ public class MainActivity extends ActionBarActivity {
             mCorrectGuess = savedInstanceState.getInt(KEY_CORRECT, 0);
             mCurrentChar = savedInstanceState.getChar(KEY_CURRENT_CHAR_PLAYING, '?');
 
+//            this.spinnerLevel.setSelection(mCurrentLevel);
         }
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
@@ -128,11 +132,12 @@ public class MainActivity extends ActionBarActivity {
         dataAdapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
         // Spinner item selection Listener
-        addListenerOnSpinnerItemSelection();
-        addListenerReplayButton();
-
         spinnerLevel.setAdapter(dataAdapter);
+        addListenerOnSpinnerItemSelection();
 
+        if (savedInstanceState != null) this.spinnerLevel.setSelection(mCurrentLevel);
+
+        addListenerReplayButton();
 
         shuffleSetButtons();
 
@@ -154,6 +159,7 @@ public class MainActivity extends ActionBarActivity {
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
+        replayView();
 
     }
 
@@ -162,8 +168,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-
         return true;
     }
 
