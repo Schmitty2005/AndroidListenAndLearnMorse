@@ -23,7 +23,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidmorse.AndroidMorse;
 
-
+//TODO ensure text is not visible during level 4 or 8 review levels
+//TODO play initial sound AFTER screen is inflated and working...
+//TODO more visible indicator of correct or incorrect answer
 public class MainActivity extends ActionBarActivity {
     int mFreqTone = 600;
     private final static String KEY_TONE = "tone";
