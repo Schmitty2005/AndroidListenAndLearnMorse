@@ -26,9 +26,11 @@ import androidmorse.AndroidMorse;
 
 public class MainActivity extends ActionBarActivity {
     int mFreqTone = 600;
+    private final static String KEY_TONE = "tone";
     int mWPM = 25;
+    private final static String KEY_WPM = "wpm";
     int mFarnsWPM = 12;
-    final boolean mFarnsSpacingEnabled = false;
+   final  boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, "!");
 
     int mAccuracy = 100;
@@ -64,6 +66,8 @@ public class MainActivity extends ActionBarActivity {
         savedInstanceState.putInt(KEY_ATTEMPTS, mAttempts);
         savedInstanceState.putInt(KEY_CORRECT, mCorrectGuess);
         savedInstanceState.putInt(KEY_LEVEL, mCurrentLevel);
+        savedInstanceState.putInt(KEY_TONE, mFreqTone);
+        savedInstanceState.putInt(KEY_WPM, mWPM);
         TextView tv = (TextView) findViewById(R.id.viewCharPlaying);
         CharSequence cs = tv.getText();
         mCurrentChar = cs.charAt(0);
@@ -78,16 +82,15 @@ public class MainActivity extends ActionBarActivity {
                                    long id) {
 
             if (mCurrentLevel != pos) {
-            Toast.makeText(parent.getContext(),
-                    parent.getItemAtPosition(pos).toString(),
-                    Toast.LENGTH_SHORT).show();
-            mCurrentLevel = pos;
-            setLevel();
-
-        }
+                Toast.makeText(parent.getContext(),
+                        parent.getItemAtPosition(pos).toString(),
+                        Toast.LENGTH_SHORT).show();
+                mCurrentLevel = pos;
+                setLevel();
+            }
             mCurrentLevel = pos;
             setLevel();//  replayView();
-        }
+    }
 
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
@@ -110,8 +113,8 @@ public class MainActivity extends ActionBarActivity {
             mCurrentLevel = savedInstanceState.getInt(KEY_LEVEL, 0);
             mCorrectGuess = savedInstanceState.getInt(KEY_CORRECT, 0);
             mCurrentChar = savedInstanceState.getChar(KEY_CURRENT_CHAR_PLAYING, '?');
-
-//            this.spinnerLevel.setSelection(mCurrentLevel);
+            mFreqTone = savedInstanceState.getInt(KEY_TONE, 600);
+            mWPM = savedInstanceState.getInt(KEY_WPM, 18);
         }
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
