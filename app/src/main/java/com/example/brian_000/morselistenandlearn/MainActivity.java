@@ -26,13 +26,14 @@ import androidmorse.AndroidMorse;
 //TODO ensure text is not visible during level 4 or 8 review levels
 //TODO play initial sound AFTER screen is inflated and working...
 //TODO more visible indicator of correct or incorrect answer
+//TODO add debug lines with TAG
 public class MainActivity extends ActionBarActivity {
     int mFreqTone = 600;
     private final static String KEY_TONE = "tone";
     int mWPM = 25;
     private final static String KEY_WPM = "wpm";
     int mFarnsWPM = 12;
-   final  boolean mFarnsSpacingEnabled = false;
+    final boolean mFarnsSpacingEnabled = false;
     AndroidMorse aMorse = new AndroidMorse(mWPM, mFarnsSpacingEnabled, mFarnsWPM, mFreqTone, "!");
 
     int mAccuracy = 100;
@@ -61,7 +62,14 @@ public class MainActivity extends ActionBarActivity {
     //int mCurrentLevel = 1;
     private Spinner spinnerLevel;
 
-    @Override
+    //View mainView = (View)(this.findViewById(R.layout.activity_main));
+
+
+    //WORKING ON THIS>>>
+    // TextView mainCharView = (TextView)(findViewById(R.id.viewCharPlaying));
+    //mainCharView.OnCreateContextMenuListener (new View.OnCreateContextMenuListener()){
+    //  super.
+    //};
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(KEY_ACCURACY, mAccuracy);
@@ -92,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
             }
             mCurrentLevel = pos;
             setLevel();//  replayView();
-    }
+        }
 
         @Override
         public void onNothingSelected(AdapterView<?> arg0) {
@@ -107,6 +115,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         if (savedInstanceState != null) {
@@ -164,7 +173,7 @@ public class MainActivity extends ActionBarActivity {
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
         attemptsDisplay.setText(String.valueOf(mAttempts));
 
-        replayView();
+        //replayView();
 
     }
 
@@ -256,9 +265,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void onClickGuess(View v) {
-
         //final String TAG = "onClickGuess has ben called";
-
 
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
 
@@ -271,22 +278,21 @@ public class MainActivity extends ActionBarActivity {
         Button buttonPressed = (Button) findViewById(v.getId());
         CharSequence mGuessedChar = buttonPressed.getText();
         Character mGuessed = mGuessedChar.charAt(0);
-
-
         //TODO add wrong notification
         if (mGuessed == mAnswer) {
             mAttempts++;
             mCorrectGuess++;
             //shuffle buttons if on review level
+
+            if (mAttempts > mLevelThreshold && mAccuracy > 95 && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
+                mCurrentLevel++;
+                setLevel();
+            }
             if (mCurrentLevel == 4 || mCurrentLevel == 8) {
                 mAnswerView.setVisibility(View.INVISIBLE);
                 mPlayString = shuffle(aMorse.levelSets.get(mCurrentLevel));
                 mPlayLevelString = shuffle(mPlayString.toLowerCase());
                 shuffleSetButtons();
-            }
-            if (mAttempts > mLevelThreshold && mAccuracy > 95 && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
-                mCurrentLevel++;
-                setLevel();
             }
             //TODO add some sort of notification for correct answer given
             //TODO maybe have a green / red bar that changes color? Or display char background color?
@@ -314,23 +320,16 @@ public class MainActivity extends ActionBarActivity {
         if (mAccuracy < 74) {
             accuracyDisplay.setTextColor(getResources().getColor(R.color.RED));
         }
-
-        //increase level variable after threshold;
-        //replay changed character
-
-        replayView();
-
         //Turn off Display if user is doing well
-
-        if (mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold && (mCurrentLevel != 4 || mCurrentLevel != 8))
-
-        {
+        //change to || from && on mCurrentLevel !=4 ot !=8 ----------------------------_-----\\ --- Here!
+        if ((mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold) || (mCurrentLevel == 4 ^ mCurrentLevel == 8)) {
             mAnswerView.setVisibility(View.INVISIBLE);
         }
-        if (mAccuracy < mAccuracyThreshold && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
+        if ((mAccuracy < mAccuracyThreshold) && (mCurrentLevel != 4 && mCurrentLevel != 8)) {
             mAnswerView.setVisibility(View.VISIBLE);
         }
 
+        replayView();
     }
 
     public void replayView() {
@@ -377,7 +376,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public String shuffle(String input) {
-
         //Shuffles characters and shortens review length strings
         List<Character> characters = new ArrayList<>();
         for (char c : input.toCharArray()) {
@@ -389,17 +387,11 @@ public class MainActivity extends ActionBarActivity {
             output.append(characters.remove(randPicker));
         }
         String caseConvert = output.toString();
-
         input = caseConvert.toUpperCase().substring(0, 6);
-
         return input;
-        // System.out.println(output.toString());
     }
 
     public void setLevel() {
-        //TODO this is causing a problem when rotated.....mAttempts is automatically set to one each time!
-        //TODO when new level is first selected, old character remains causing accuracy error! YUCK!
-        //TODO maybe just move this code to spinner listener??? may cause problems.....
         mAttempts = 1;
         mCorrectGuess = 1;
 
@@ -411,47 +403,17 @@ public class MainActivity extends ActionBarActivity {
         String convert = aMorse.levelSets.get(mCurrentLevel + 1);
         shuffle(convert);
         mPlayLevelString = convert.toLowerCase();
-
-        /*if (mCurrentLevel == 4 || mCurrentLevel == 8) {
-            //TODO code for level 4 play string levels 1 - 4 combined
-        }
-
-        if (mCurrentLevel == 8) {
-            //TODO code for review of levels 5-8
-        }
-        if (mCurrentLevel == mLevelMax) {
-            //TODO code for max level reached
-        }*/
-        //TODO add code for level 4 review and level 5-8 review with level 9 "morse master" all characters!
-        // String interString = aMorse.levelSets.get(mCurrentLevel);
-        // mPlayLevelString = interString.toLowerCase();
-
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
         double random = Math.random() * mPlayLevelString.length();
         char mChar = mPlayLevelString.charAt((int) random);
         mChar = Character.toUpperCase(mChar);
-
-        //the line below will not be needed once level switching on rotation is fixed!
-        //if (mCurrentChar != null && mLevelCheck != mCurrentLevel) mChar = mCurrentChar;
-
         mAnswerView.setText(Character.toString(mChar));
-
         shuffleSetButtons();
+        if (mCurrentLevel ==4 || mCurrentLevel ==8 )mAnswerView.setVisibility(View.INVISIBLE);
+                else mAnswerView.setVisibility(View.VISIBLE);
+        //added replayVIew() today.
+        replayView();
     }
-
-
 }
 
-/*
-//============
-//Code to play wave
-        byte playByte[] = aMorse.morseWaveByteArray;
-        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, 16000,
-                AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
-                playByte.length, AudioTrack.MODE_STATIC);
-        int write = at.write(playByte, 44, (playByte.length - 44));
-        at.play();
-// end of code to play wave
-//==============
-*/
 
