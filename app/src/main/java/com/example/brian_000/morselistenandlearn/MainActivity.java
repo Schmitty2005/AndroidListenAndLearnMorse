@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidmorse.AndroidMorse;
 
-//TODO ensure text is not visible during level 4 or 8 review levels
 //TODO play initial sound AFTER screen is inflated and working...
 //TODO more visible indicator of correct or incorrect answer
 //TODO add debug lines with TAG
@@ -42,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
     int mAccuracyThreshold = 93;
     int mAttempts = 1;
     private final static String KEY_ATTEMPTS = "attempts";
-    int mAttemptMAX = 30;
+    int mAttemptMAX = 70;
 
     int mCorrectGuess = 1;
     private final static String KEY_CORRECT = "correct";
@@ -53,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
     //int mLevelMax = 9;
     int mLevelThreshold = 35; //number of attempts before level change
 
-    String mPlayString = aMorse.levelSets.get(1);
+    String mPlayString = aMorse.levelSets.get(mCurrentLevel+1);
     String mPlayLevelString = mPlayString.toLowerCase();
 
     Character mCurrentChar;
@@ -62,14 +61,6 @@ public class MainActivity extends ActionBarActivity {
     //int mCurrentLevel = 1;
     private Spinner spinnerLevel;
 
-    //View mainView = (View)(this.findViewById(R.layout.activity_main));
-
-
-    //WORKING ON THIS>>>
-    // TextView mainCharView = (TextView)(findViewById(R.id.viewCharPlaying));
-    //mainCharView.OnCreateContextMenuListener (new View.OnCreateContextMenuListener()){
-    //  super.
-    //};
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(KEY_ACCURACY, mAccuracy);
@@ -82,8 +73,6 @@ public class MainActivity extends ActionBarActivity {
         CharSequence cs = tv.getText();
         mCurrentChar = cs.charAt(0);
         savedInstanceState.putChar(KEY_CURRENT_CHAR_PLAYING, mCurrentChar);
-
-        //tv.setText(mCurrentChar);
     }
 
     public class CustomOnItemSelectedListener implements OnItemSelectedListener {
@@ -110,13 +99,10 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         if (savedInstanceState != null) {
             mAccuracy = savedInstanceState.getInt(KEY_ACCURACY, 100);
@@ -127,6 +113,7 @@ public class MainActivity extends ActionBarActivity {
             mFreqTone = savedInstanceState.getInt(KEY_TONE, 600);
             mWPM = savedInstanceState.getInt(KEY_WPM, 18);
         }
+
         spinnerLevel = (Spinner) findViewById(R.id.spinnerLevel);
 
         List<String> list = new ArrayList<>();
@@ -154,6 +141,7 @@ public class MainActivity extends ActionBarActivity {
         addListenerReplayButton();
 
         shuffleSetButtons();
+/*
 
         //set display character to random
         TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
@@ -167,7 +155,7 @@ public class MainActivity extends ActionBarActivity {
 
         charDisplay.setText(Character.toString(mChar));
 
-
+*/
         TextView accuracyDisplay = (TextView) (findViewById(R.id.textAccuracy));
         accuracyDisplay.setText(String.format("%s%%", String.valueOf(mAccuracy)));
         TextView attemptsDisplay = (TextView) (findViewById(R.id.textAttempts));
@@ -176,8 +164,6 @@ public class MainActivity extends ActionBarActivity {
         //replayView();
 
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -190,7 +176,6 @@ public class MainActivity extends ActionBarActivity {
         spinnerLevel.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -230,7 +215,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     //get the selected dropdown list value
     public void addListenerReplayButton() {
 
@@ -262,7 +246,6 @@ public class MainActivity extends ActionBarActivity {
         });
 
     }
-
 
     public void onClickGuess(View v) {
         //final String TAG = "onClickGuess has ben called";
@@ -321,14 +304,12 @@ public class MainActivity extends ActionBarActivity {
             accuracyDisplay.setTextColor(getResources().getColor(R.color.RED));
         }
         //Turn off Display if user is doing well
-        //change to || from && on mCurrentLevel !=4 ot !=8 ----------------------------_-----\\ --- Here!
         if ((mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold) || (mCurrentLevel == 4 ^ mCurrentLevel == 8)) {
             mAnswerView.setVisibility(View.INVISIBLE);
         }
         if ((mAccuracy < mAccuracyThreshold) && (mCurrentLevel != 4 && mCurrentLevel != 8)) {
             mAnswerView.setVisibility(View.VISIBLE);
         }
-
         replayView();
     }
 
@@ -372,7 +353,18 @@ public class MainActivity extends ActionBarActivity {
         btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
         btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
         btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
+        //add routine to set display character as well
+        //set display character to random
+        TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
+        double random = Math.random() * mPlayLevelString.length();
+        char mChar = mPlayLevelString.charAt((int) random);
+        mChar = Character.toUpperCase(mChar);
 
+        //this doesn't seem to work right yet!  //current character is not set during rotation!
+
+        //if (mCurrentChar != null) mChar = mCurrentChar;       //commented out for debug 1-23-2015
+
+        charDisplay.setText(Character.toString(mChar));
     }
 
     public String shuffle(String input) {
@@ -411,9 +403,6 @@ public class MainActivity extends ActionBarActivity {
         shuffleSetButtons();
         if (mCurrentLevel ==4 || mCurrentLevel ==8 )mAnswerView.setVisibility(View.INVISIBLE);
                 else mAnswerView.setVisibility(View.VISIBLE);
-        //added replayVIew() today.
         replayView();
     }
 }
-
-

@@ -48,7 +48,8 @@
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/button_custom"/>
 
         <Button
 
@@ -60,7 +61,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
             android:text="New Button"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:background="@drawable/button_custom"/>
 
         <Button
             android:id="@+id/buttonGuess3"
@@ -70,7 +72,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
             android:text="New Button"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:background="@drawable/button_custom"/>
     </LinearLayout>
 
     <LinearLayout
@@ -90,7 +93,8 @@
             android:onClick="onClickGuess"
             android:text="New Button"
             android:textAlignment="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/button_custom"/>
 
         <Button
             android:id="@+id/buttonGuess5"
@@ -100,7 +104,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:onClick="onClickGuess"
             android:text="New Button"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:background="@drawable/button_custom"/>
 
         <Button
             android:id="@+id/buttonGuess6"
@@ -110,7 +115,8 @@
             android:layout_weight="1"
             android:onClick="onClickGuess"
             android:text="New Button"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:background="@drawable/button_custom"/>
 
 
     </LinearLayout>
@@ -167,7 +173,8 @@
         android:layout_below="@+id/textView4"
         android:text="@string/button_replay"
         android:textColor="#ff009e00"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        />
 
     <Spinner
         android:id="@+id/spinnerLevel"
