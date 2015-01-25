@@ -41,8 +41,8 @@ public class MainActivity extends ActionBarActivity {
     int mAccuracyThreshold = 93;
     int mAttempts = 1;
     private final static String KEY_ATTEMPTS = "attempts";
-    int mAttemptMAX = 70;
-
+    //int mAttemptMAX = 80;
+    int mAttemptThreshold = 10; //changed from 50
     int mCorrectGuess = 1;
     private final static String KEY_CORRECT = "correct";
 
@@ -50,10 +50,10 @@ public class MainActivity extends ActionBarActivity {
     private final static String KEY_LEVEL = "level";
 
     //int mLevelMax = 9;
-    int mLevelThreshold = 35; //number of attempts before level change
+    int mLevelThreshold = 15;  // changed from 100//number of attempts before level change
 
-    String mPlayString = aMorse.levelSets.get(mCurrentLevel+1);
-    String mPlayLevelString = mPlayString.toLowerCase();
+    String mPlayLevelString = aMorse.levelSets.get(mCurrentLevel + 1).toLowerCase();
+    //String mPlayLevelString = mPlayString.toLowerCase();
 
     Character mCurrentChar;
     private final static String KEY_CURRENT_CHAR_PLAYING = "current";
@@ -164,6 +164,7 @@ public class MainActivity extends ActionBarActivity {
         //replayView();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -176,6 +177,7 @@ public class MainActivity extends ActionBarActivity {
         spinnerLevel.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -252,11 +254,12 @@ public class MainActivity extends ActionBarActivity {
 
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
 
-        CharSequence mAnswerSeq = mAnswerView.getText();
-        String mAnswerString = mAnswerSeq.toString();
-        mAnswerString = mAnswerString.toUpperCase();
+        //CharSequence mAnswerSeq = mAnswerView.getText();
+       //String mAnswerString = mAnswerSeq.toString();
+       // mAnswerString = mAnswerString.toUpperCase();
 
-        Character mAnswer = mAnswerString.charAt(0);
+        //Character mAnswer = mAnswerString.charAt(0);
+        Character mAnswer = mAnswerView.getText().toString().toUpperCase().charAt(0);
 
         Button buttonPressed = (Button) findViewById(v.getId());
         CharSequence mGuessedChar = buttonPressed.getText();
@@ -265,25 +268,29 @@ public class MainActivity extends ActionBarActivity {
         if (mGuessed == mAnswer) {
             mAttempts++;
             mCorrectGuess++;
+            double random = Math.random() * mPlayLevelString.length();
+            char mChar = Character.toUpperCase(mPlayLevelString.charAt((int) random));
+            mChar = Character.toUpperCase(mChar);
+             mAnswerView.setText(Character.toString(mChar));
+            //shuffleSetButtons();
             //shuffle buttons if on review level
-
-            if (mAttempts > mLevelThreshold && mAccuracy > 95 && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
+            if ((mAttempts > mLevelThreshold) && (mAccuracy > 95) && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
                 mCurrentLevel++;
                 setLevel();
             }
             if (mCurrentLevel == 4 || mCurrentLevel == 8) {
                 mAnswerView.setVisibility(View.INVISIBLE);
-                mPlayString = shuffle(aMorse.levelSets.get(mCurrentLevel));
-                mPlayLevelString = shuffle(mPlayString.toLowerCase());
+                //mPlayString = shuffle(aMorse.levelSets.get(mCurrentLevel));
+                mPlayLevelString = shuffle(aMorse.levelSets.get(mCurrentLevel).toLowerCase());
                 shuffleSetButtons();
             }
             //TODO add some sort of notification for correct answer given
             //TODO maybe have a green / red bar that changes color? Or display char background color?
 
-            double random = Math.random() * mPlayLevelString.length();
-            char mChar = mPlayLevelString.charAt((int) random);
-            mChar = Character.toUpperCase(mChar);
-            mAnswerView.setText(Character.toString(mChar));
+           // double random = Math.random() * mPlayLevelString.length();
+            //char mChar = Character.toUpperCase(mPlayLevelString.charAt((int) random));
+            //mChar = Character.toUpperCase(mChar);
+           // mAnswerView.setText(Character.toString(mChar));
         } else mAttempts++;
 
         mAccuracy = (int) (((double) mCorrectGuess / mAttempts) * 100);
@@ -304,10 +311,10 @@ public class MainActivity extends ActionBarActivity {
             accuracyDisplay.setTextColor(getResources().getColor(R.color.RED));
         }
         //Turn off Display if user is doing well
-        if ((mAttempts > mAttemptMAX && mAccuracy > mAccuracyThreshold) || (mCurrentLevel == 4 ^ mCurrentLevel == 8)) {
+        if (((mAttempts > mAttemptThreshold) && (mAccuracy > mAccuracyThreshold)) || (mCurrentLevel == 4 ^ mCurrentLevel == 8)) {
             mAnswerView.setVisibility(View.INVISIBLE);
         }
-        if ((mAccuracy < mAccuracyThreshold) && (mCurrentLevel != 4 && mCurrentLevel != 8)) {
+        if ((mAccuracy < mAccuracyThreshold) && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
             mAnswerView.setVisibility(View.VISIBLE);
         }
         replayView();
@@ -339,6 +346,12 @@ public class MainActivity extends ActionBarActivity {
 
     private void shuffleSetButtons() {
         mPlayLevelString = shuffle(mPlayLevelString);
+
+        TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
+        double random = Math.random() * mPlayLevelString.length();
+        char mChar = mPlayLevelString.charAt((int) random);
+        mChar = Character.toUpperCase(mChar);
+        charDisplay.setText(Character.toString(mChar));
         //define buttons from UI
         Button btnGuess1 = (Button) (findViewById(R.id.buttonGuess1));
         Button btnGuess2 = (Button) (findViewById(R.id.buttonGuess2));
@@ -355,16 +368,8 @@ public class MainActivity extends ActionBarActivity {
         btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
         //add routine to set display character as well
         //set display character to random
-        TextView charDisplay = (TextView) (findViewById(R.id.viewCharPlaying));
-        double random = Math.random() * mPlayLevelString.length();
-        char mChar = mPlayLevelString.charAt((int) random);
-        mChar = Character.toUpperCase(mChar);
 
-        //this doesn't seem to work right yet!  //current character is not set during rotation!
-
-        //if (mCurrentChar != null) mChar = mCurrentChar;       //commented out for debug 1-23-2015
-
-        charDisplay.setText(Character.toString(mChar));
+        replayView();
     }
 
     public String shuffle(String input) {
@@ -386,23 +391,22 @@ public class MainActivity extends ActionBarActivity {
     public void setLevel() {
         mAttempts = 1;
         mCorrectGuess = 1;
-
         int mLevelCheck = this.spinnerLevel.getSelectedItemPosition();
         if (mLevelCheck != mCurrentLevel) {
-
             this.spinnerLevel.setSelection(mCurrentLevel);
         }
+        //get new play string for level
         String convert = aMorse.levelSets.get(mCurrentLevel + 1);
         shuffle(convert);
         mPlayLevelString = convert.toLowerCase();
+
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
-        double random = Math.random() * mPlayLevelString.length();
-        char mChar = mPlayLevelString.charAt((int) random);
-        mChar = Character.toUpperCase(mChar);
-        mAnswerView.setText(Character.toString(mChar));
+
+        if (mCurrentLevel == 4 || mCurrentLevel == 8) mAnswerView.setVisibility(View.INVISIBLE);
+        else mAnswerView.setVisibility(View.VISIBLE);
+        //set up guess keys
         shuffleSetButtons();
-        if (mCurrentLevel ==4 || mCurrentLevel ==8 )mAnswerView.setVisibility(View.INVISIBLE);
-                else mAnswerView.setVisibility(View.VISIBLE);
-        replayView();
+
+        //replayView();
     }
 }

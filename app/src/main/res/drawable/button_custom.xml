@@ -5,4 +5,5 @@
     <item android:drawable="@drawable/button_small_not"
         android:state_focused="true" />
     <item android:drawable="@drawable/button_small_not" />
+
 </selector>
