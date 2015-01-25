@@ -221,6 +221,7 @@ public class MainActivity extends ActionBarActivity {
     public void addListenerReplayButton() {
 
         Button btnReplay = (Button) findViewById(R.id.buttonReplay);
+        btnReplay.setSoundEffectsEnabled(false);
         btnReplay.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -366,6 +367,14 @@ public class MainActivity extends ActionBarActivity {
         btnGuess4.setText(Character.toString(mPlayLevelString.charAt(3)));
         btnGuess5.setText(Character.toString(mPlayLevelString.charAt(4)));
         btnGuess6.setText(Character.toString(mPlayLevelString.charAt(5)));
+
+        btnGuess1.setSoundEffectsEnabled(false);
+        btnGuess2.setSoundEffectsEnabled(false);
+        btnGuess3.setSoundEffectsEnabled(false);
+        btnGuess4.setSoundEffectsEnabled(false);
+        btnGuess5.setSoundEffectsEnabled(false);
+        btnGuess6.setSoundEffectsEnabled(false);
+
         //add routine to set display character as well
         //set display character to random
 
