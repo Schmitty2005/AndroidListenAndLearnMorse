@@ -256,8 +256,8 @@ public class MainActivity extends ActionBarActivity {
         TextView mAnswerView = (TextView) findViewById(R.id.viewCharPlaying);
 
         //CharSequence mAnswerSeq = mAnswerView.getText();
-       //String mAnswerString = mAnswerSeq.toString();
-       // mAnswerString = mAnswerString.toUpperCase();
+        //String mAnswerString = mAnswerSeq.toString();
+        // mAnswerString = mAnswerString.toUpperCase();
 
         //Character mAnswer = mAnswerString.charAt(0);
         Character mAnswer = mAnswerView.getText().toString().toUpperCase().charAt(0);
@@ -272,7 +272,7 @@ public class MainActivity extends ActionBarActivity {
             double random = Math.random() * mPlayLevelString.length();
             char mChar = Character.toUpperCase(mPlayLevelString.charAt((int) random));
             mChar = Character.toUpperCase(mChar);
-             mAnswerView.setText(Character.toString(mChar));
+            mAnswerView.setText(Character.toString(mChar));
             //shuffleSetButtons();
             //shuffle buttons if on review level
             if ((mAttempts > mLevelThreshold) && (mAccuracy > 95) && (mCurrentLevel != 4 || mCurrentLevel != 8)) {
@@ -288,10 +288,10 @@ public class MainActivity extends ActionBarActivity {
             //TODO add some sort of notification for correct answer given
             //TODO maybe have a green / red bar that changes color? Or display char background color?
 
-           // double random = Math.random() * mPlayLevelString.length();
+            // double random = Math.random() * mPlayLevelString.length();
             //char mChar = Character.toUpperCase(mPlayLevelString.charAt((int) random));
             //mChar = Character.toUpperCase(mChar);
-           // mAnswerView.setText(Character.toString(mChar));
+            // mAnswerView.setText(Character.toString(mChar));
         } else mAttempts++;
 
         mAccuracy = (int) (((double) mCorrectGuess / mAttempts) * 100);
